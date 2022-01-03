@@ -131,7 +131,7 @@ ui <- fluidPage(
     p("If you have questions or comments, contact Stephanie Yan at ",
       a("syan@jhu.edu.",
         href = "mailto:syan@jhu.edu"),
-      "Source code for the Shiny app is available",
+      "Raw data and source code for the Shiny app is available",
       a("here.",
         href = "https://github.com/stephaniemyan/sv_ld_shiny")),
     br(),
