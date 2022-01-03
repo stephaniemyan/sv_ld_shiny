@@ -1,5 +1,5 @@
 # sv_ld_shiny
-Source code for an **[R Shiny app]**(https://smyan.shinyapps.io/sv_ld_shiny) to browse linkage disequilibrium between structural variants (SVs) and SNPs.
+Source code for an **[R Shiny app](https://smyan.shinyapps.io/sv_ld_shiny)** to browse linkage disequilibrium between structural variants (SVs) and SNPs.
 
 Data comes from Yan SM et al., [Local adaptation and archaic introgression shape global diversity at structural variant loci](https://elifesciences.org/articles/67615), (_eLife_ 2021).
 
