@@ -1,9 +1,7 @@
 library(shiny)
 library(rsconnect)
-library(tidyverse)
+library(dplyr)
 library(data.table)
-
-setwd("/Users/syan/Documents/mccoy-lab/presentations/sv_selection_paper/sv_ld_shiny")
 
 #================================================================#
 # Load in LD data. Pre-processing steps: ======================= #
@@ -11,6 +9,8 @@ setwd("/Users/syan/Documents/mccoy-lab/presentations/sv_selection_paper/sv_ld_sh
 # 2. Remove SVs that violate HWE in more than 50% of populations #
 # 3. Remove SVs with genotyping rate < 50% ===================== #
 # 4. Remove SVs with AF = 0 ==================================== #
+# 5. Annotate with SV length =================================== #
+# 6. Annotate SNPs with rsIDs from dbSNP ======================= #
 #================================================================#
 
 # read in and filter LD data
@@ -21,7 +21,6 @@ setwd("/Users/syan/Documents/mccoy-lab/presentations/sv_selection_paper/sv_ld_sh
 #   group_by(SNP) %>%
 #   summarize(max_af = max(MAF)) %>%
 #   setDT()
-# 
 # ld <- semi_join(all_pops_ld,
 #                 gt_callrate[ call_rate >= 0.5 ],
 #                 by = "SV") %>%
@@ -47,7 +46,7 @@ setwd("/Users/syan/Documents/mccoy-lab/presentations/sv_selection_paper/sv_ld_sh
 # ld[pop %in% c("CEU", "FIN", "GBR", "IBS", "TSI"), superpop := "EUR"]
 # ld[pop %in% c("BEB", "GIH", "ITU", "PJL", "STU"), superpop := "SAS"]
 
-# add in more data about SVs
+# add in SV length data
 # svlen <- fread("paragraph_sv_lengths.vcf",
 #                col.names = c("CHROM", "POS", "ID", "sv_length"))
 # ld <- merge(ld, svlen[, c("ID", "sv_length")],
@@ -71,7 +70,7 @@ setwd("/Users/syan/Documents/mccoy-lab/presentations/sv_selection_paper/sv_ld_sh
 # setnames(ld, c("ID", "REF", "ALT"), c("snp_rsid", "snp_ref", "snp_alt"))
 
 # fwrite(ld, "ld_filtered_20210114.txt", sep = "\t")
-ld <- fread("ld_filtered_20210114.txt")
+ld <- fread(cmd = "zcat ld_filtered_20210114.txt")
 
 #==========================#
 # Customize user interface #
@@ -114,7 +113,7 @@ ui <- fluidPage(
     selectInput("superpop", "1000 Genomes superpopulation:",
                 c("All", unique(as.character(ld$superpop)))),
     # manual input of r2 threshold
-    textInput("r2", label = "R2 threshold", placeholder = "0.5")
+    textInput("r2", label = c(list(HTML("r<sup>2</sup>")), " threshold"), placeholder = "0.5")
   ),
   
   # app description
